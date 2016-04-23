@@ -16,11 +16,8 @@
     "main": "./out/src/extension",
     "contributes": {
         "commands": [{
-            "command": "extension.sayHello",
-            "title": "Hello World"
-        }, {
-            "command": "ext.2",
-            "title": "Hello World 2"
+            "command": "Sample-Transformer",
+            "title": "Sample-Transformer"
         }]
     },
     "scripts": {

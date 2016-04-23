@@ -3,7 +3,18 @@
 import {ExtensionContext, window, commands, Selection, Range, TextEditorEdit} from "vscode";
 import Transformation from "./transformation";
 
+class SampleTransformer extends Transformation {
+    getCommandName(): string {
+        return "Sample-Transformer";
+    }
+    
+    transform(input: string, cb: (output: string) => void): void {
+        cb(input.toUpperCase());
+    }
+}
+
 export const transformers = new Array<Transformation>();
+transformers.push(new SampleTransformer());
 
 //This is needed to be able to inject a spy transformer during testing
 let context: ExtensionContext;
