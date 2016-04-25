@@ -8,7 +8,7 @@ class SampleTransformer extends Transformation {
         return "Sample-Transformer";
     }
     
-    transform(input: string, cb: (output: string) => void): void {
+    transform(input: string, cb: (output: string) => void): void {        
         cb(input.toUpperCase());
     }
 }
