@@ -23,13 +23,13 @@ suite("integration test", () => {
             done();
         });
 
-        vscode.commands.executeCommand("Sample-Test-Transformer");
+        vscode.commands.executeCommand("Test-Transformer");
     });
 });
 
-class SampleTestTransformer extends Transformation {
+class TestTransformer extends Transformation {
     getCommandName(): string {
-        return "Sample-Test-Transformer";
+        return "Test-Transformer";
     }
 
     transform(input: string, cb: (output: string) => void): void {
@@ -38,7 +38,7 @@ class SampleTestTransformer extends Transformation {
 }
 
 function setupTest(done: MochaDone) {
-    myExtension.transformers.push(new SampleTestTransformer());
+    myExtension.transformers.push(new TestTransformer());
     //myExtension.activateAgain(); //Actually extension should be initiliazed at startup, so before coming to this line?!
 
     const selections = new Array<vscode.Selection>();

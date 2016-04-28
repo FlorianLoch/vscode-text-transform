@@ -16,8 +16,11 @@
     "main": "./out/src/extension",
     "contributes": {
         "commands": [{
-            "command": "Sample-Transformer",
-            "title": "Sample-Transformer"
+            "command": "uppercase",
+            "title": "To uppercase"
+        }, {
+            "command": "lowercase",
+            "title": "To lowercase"
         }]
     },
     "scripts": {
