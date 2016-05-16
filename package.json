@@ -1,12 +1,14 @@
 {
     "name": "text-transform",
-    "displayName": "textTransform",
-    "description": "A simple extension to apply simple transformations to currently selected text",
+    "displayName": "TextTransform",
+    "description": "A simple extension to apply simple transformations (like 'to uppercase', 'to lowercase') to currently selected text",
     "version": "0.0.1",
     "publisher": "florianloch",
     "engines": {
         "vscode": "^1.0.0"
     },
+    "license": "MIT",
+    "repository": "https://github.com/FlorianLoch/vscode-text-transform",
     "categories": [
         "Other"
     ],
