@@ -9,15 +9,15 @@ transformers.push(new LowercaseTransformer());
 //This is needed to be able to inject a spy transformer during testing
 let context: ExtensionContext;
 export function activateAgain() {
-    context.subscriptions.forEach((subscription: {dispose(): any}) => {
-       subscription.dispose(); 
+    context.subscriptions.forEach((subscription: { dispose(): any }) => {
+        subscription.dispose();
     });
     activate(context);
 }
 
 export function activate(cntxt: ExtensionContext) {
     context = cntxt;
-    
+
     transformers.forEach((transformer: Transformation) => {
         let disposable = commands.registerCommand(transformer.getCommandName(), handleCommand);
 
@@ -45,20 +45,26 @@ export function activate(cntxt: ExtensionContext) {
             }
 
             function transformString(idx: number, onDone: () => void) {
-                if (idx >= selectedStrings.length) {
+                if (idx == selectedStrings.length) {
                     return onDone();
                 }
-                
-                transformer.transform(selectedStrings[idx], (output: string) => {
+
+                //Iterate recursively, provide async (callback based) and sync version (in case the returned value is a string)
+                const transformed = transformer.transform(selectedStrings[idx], handleTransformed);
+                if (typeof transformed == "string") {
+                    handleTransformed(<string>transformed);
+                }
+
+                function handleTransformed(output: string) {
                     transformedStrings.push(output);
                     transformString(++idx, onDone);
-                });
+                }
             }
 
             function replaceStringsInEditor() {
                 editor.edit((editBuilder: TextEditorEdit) => {
                     selections.forEach((selection: Selection, idx: number) => {
-                       editBuilder.replace(selection, transformedStrings[idx]); 
+                        editBuilder.replace(selection, transformedStrings[idx]);
                     });
                 }).then(function success(result: boolean) {
                     console.log("Successfully applied transformations on " + selections.length + " selections.");

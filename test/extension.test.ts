@@ -7,29 +7,63 @@ import * as myExtension from "../src/extension";
 import Transformation from "../src/transformation";
 
 suite("integration test", () => {
-    setup(setupTest);
+    suiteSetup(setupTest);
 
-    test("behaviour of text-transformer framework", (done: MochaDone) => {
-        vscode.workspace.onDidChangeTextDocument((change: vscode.TextDocumentChangeEvent) => {
+    test("behaviour of text-transformer framework (async)", (done: MochaDone) => {
+        vscode.workspace.onDidChangeTextDocument(singleFire((change: vscode.TextDocumentChangeEvent) => { //We need singleFire here, otherwise this handler gets procesed when editor content changed during second testcase
             const text = vscode.window.activeTextEditor.document.getText();
 
             try { //Usually one wouldn"t need this construct - but it seems like the "thenables" catch the error before getting up higher in the stack
                 assert.equal(text, "HAllo, HIER bin ich!\n");
-            } 
+            }
             catch (err) {
                 return done(err);
             }
-            
+
+            done();
+        }));
+
+        vscode.commands.executeCommand("Test-Transformer-Async");
+    });
+
+    test("behaviour of text-transformer framework (sync)", (done: MochaDone) => {
+        vscode.workspace.onDidChangeTextDocument((change: vscode.TextDocumentChangeEvent) => {
+            const text = vscode.window.activeTextEditor.document.getText();
+
+            try { //Usually one wouldn"t need this construct - but it seems like the "thenables" catch the error before getting up higher in the stack
+                assert.equal(text, "hallo, hier bin ich!\n");
+            }
+            catch (err) {
+                return done(err);
+            }
+
             done();
         });
 
-        vscode.commands.executeCommand("Test-Transformer");
+        //Actually the next three lines are setup code...
+        const selections = new Array<vscode.Selection>();
+        selections.push(new vscode.Selection(new vscode.Position(0, 0), new vscode.Position(0, 2)));
+        selections.push(new vscode.Selection(new vscode.Position(0, 5), new vscode.Position(0, 11)));
+
+        vscode.window.activeTextEditor.selections = selections;
+
+        vscode.commands.executeCommand("Test-Transformer-Sync");
     });
 });
 
-class TestTransformer extends Transformation {
+function singleFire(fn: Function) {
+    let fired = false;
+    return function () {
+        if (fired) return;
+        fired = true;
+        
+        fn.apply(null, arguments);
+    };
+}
+
+class TestTransformerAsync extends Transformation {
     getCommandName(): string {
-        return "Test-Transformer";
+        return "Test-Transformer-Async";
     }
 
     transform(input: string, cb: (output: string) => void): void {
@@ -37,8 +71,20 @@ class TestTransformer extends Transformation {
     }
 }
 
+class TestTransformerSync extends Transformation {
+    getCommandName(): string {
+        return "Test-Transformer-Sync";
+    }
+
+    transform(input: string, cb: (output: string) => void): string {
+        return input.toLowerCase();
+    }
+}
+
 function setupTest(done: MochaDone) {
-    myExtension.transformers.push(new TestTransformer());
+    myExtension.transformers.push(new TestTransformerAsync());
+    myExtension.transformers.push(new TestTransformerSync());
+
     //myExtension.activateAgain(); //Actually extension should be initiliazed at startup, so before coming to this line?!
 
     const selections = new Array<vscode.Selection>();
