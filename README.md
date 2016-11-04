@@ -6,9 +6,10 @@ Therefore text transformation handlers can be registered at the core of the exte
 
 ---
 
-Currently there are two transformations included:
+Currently there are three transformations included:
 - to uppercase
 - to lowercase 
+- to capitalcase
 
 ---
 
