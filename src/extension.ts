@@ -5,6 +5,7 @@ import {UppercaseTransformer, LowercaseTransformer} from "./simple-transformatio
 export const transformers = new Array<Transformation>();
 transformers.push(new UppercaseTransformer());
 transformers.push(new LowercaseTransformer());
+transformers.push(new CapitalcaseTransformer());
 
 //This is needed to be able to inject a spy transformer during testing
 let context: ExtensionContext;

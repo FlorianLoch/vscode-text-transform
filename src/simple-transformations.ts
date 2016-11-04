@@ -19,3 +19,13 @@ export class LowercaseTransformer extends Transformation {
         cb(input.toLowerCase());
     }
 }
+
+export class CapitalcaseTransformer extends Transformation {
+    getCommandName(): string {
+        return "capitalcase";
+    }
+    
+    transform(input: string, cb: (output: string) => void): void {        
+        cb(input.charAt(0).toUpperCase() + input.slice(1).toLowerCase());
+    }
+}
