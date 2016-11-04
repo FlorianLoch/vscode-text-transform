@@ -25,6 +25,10 @@
       {
         "command": "lowercase",
         "title": "To lowercase"
+      },
+      {
+        "command": "capitalcase",
+        "title": "To capitalcase"
       }
     ]
   },
