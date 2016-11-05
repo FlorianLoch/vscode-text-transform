@@ -9,7 +9,9 @@ Therefore text transformation handlers can be registered at the core of the exte
 Currently there are three transformations included:
 - to uppercase
 - to lowercase 
-- to capitalcase
+- to capitalcase (capitalizing the first letter of each word<sup>*</sup>)
+
+<sup>*</sup> a word is always starting after a common whitespace character + at the start of the selection
 
 ---
 

@@ -51,6 +51,25 @@ suite("integration test", () => {
     });
 });
 
+
+
+
+import {CapitalcaseTransformer} from "../src/simple-transformations";
+
+suite("unit tests", () => {
+    suite("capitalcase", () => {
+        const SAMPLE_SENTENCE = "hallo\twelt,\nich frEUe   mich!"; // between "frEUu" and "mich" there a three whitespaces 
+        let instance = new CapitalcaseTransformer();
+        
+        test("correct handling of multiword input", (done: MochaDone) => {
+            instance.transform(SAMPLE_SENTENCE, (output: string) => {
+                assert.equal(output, "Hallo\tWelt,\nIch Freue   Mich!");
+                done();
+            });
+        });
+    });
+});
+
 function singleFire(fn: Function) {
     let fired = false;
     return function () {
