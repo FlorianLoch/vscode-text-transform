@@ -1,6 +1,6 @@
 import {ExtensionContext, window, commands, Selection, Range, TextEditorEdit} from "vscode";
 import Transformation from "./transformation";
-import {UppercaseTransformer, LowercaseTransformer} from "./simple-transformations";
+import {UppercaseTransformer, LowercaseTransformer, CapitalcaseTransformer} from "./simple-transformations";
 
 export const transformers = new Array<Transformation>();
 transformers.push(new UppercaseTransformer());
